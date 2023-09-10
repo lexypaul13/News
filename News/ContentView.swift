@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var newsListVM = NewsListViewModel()
+       
+    init() {
+        newsListVM.fetchNews()
+    }
+       
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                ForEach(0..<newsListVM.news.count, id: \.self) { index in
+                    ListCell(title: newsListVM.news[index].title ?? "Not Title", caption: newsListVM.news[index].description ?? "None exist")
+                }
+            }
+            .navigationBarTitle("News List")
         }
-        .padding()
     }
 }
 
